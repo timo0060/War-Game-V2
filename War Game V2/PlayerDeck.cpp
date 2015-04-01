@@ -50,7 +50,3 @@ MainDeck::card PlayerDeck::getFront(){
 void PlayerDeck::eraseCard(){
 	deck.erase(deck.begin());
 }
-
-void PlayerDeck::eraseCard(int index){
-	deck.erase(dec)
-}

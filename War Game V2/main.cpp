@@ -11,6 +11,9 @@ int getNumShuffle();
 void splitDeck();
 void getPlayerName();
 void playRound();
+void playAutoRound();
+bool isGameOver();
+string getSuit(int);
 
 //Create Main Decks (Holds all the cards)
 MainDeck mainDeck;
@@ -31,7 +34,7 @@ int main(){
 
 	getPlayerName();
 
-	cout << "So, people call you " << playerName << "? Well welcome to WAR!" << endl << endl;
+	cout << "So, people call you " << playerName << "? Well, welcome to WAR!" << endl << endl;
 
 	numShuffle = getNumShuffle();
 
@@ -43,37 +46,59 @@ int main(){
 
 	cout << "The Deck has been split........" << endl << endl;
 
-	//Start the main play loop
-	while (play){
-		cout << endl << playerName << "'s Deck: " << playerDeck.getSize() << endl;
-		cout << "Computers Deck: " << compDeck.getSize() << endl;
+	//Ask the player if they'd like to automate the whole game
+	cout << playerName << ", would you like to automate the game? (y/n) ";
+	cin >> playGame;
 
-		cout << endl << "Play round? (y/n) : ";
-		cin >> playGame; //Get the players input
+	playGame = tolower(playGame);
 
-		//Put the players input to lower case so it will ignore case
-		playGame = tolower(playGame);
-
-		//If they say no, end the loop thus ending the game.
-		if (playGame == 'n'){
-			play = false;
-		}//If they say yes, continue the game
-		else if (playGame == 'y'){
-			play = true;
-			playRound();
+	if (playGame == 'y'){
+		while (!gameOver)
+		{
+			playAutoRound();
 			gameOver = isGameOver();
 		}
-		else //If they put anything else in there, continue the loop, and inform the player it must be y or a n
-		{
-			cout << "That was not an y/n" << endl;
-		}
 
-		if (gameOver){
-			play = false;
+		cout << winner << " is the winner!" << endl << endl;
 
-			cout << winner << " is the winner!";
+	}
+	else if (playGame == 'n'){
+		//Start the main play loop
+		while (play){
+			cout << endl << playerName << "'s Deck: " << playerDeck.getSize() << endl;
+			cout << "Computers Deck: " << compDeck.getSize() << endl;
+
+			cout << endl << "Play round? (y/n) : ";
+			cin >> playGame; //Get the players input
+			cout << endl;
+
+			//Put the players input to lower case so it will ignore case
+			playGame = tolower(playGame);
+
+			//If they say no, end the loop thus ending the game.
+			if (playGame == 'n'){
+				play = false;
+			}//If they say yes, continue the game
+			else if (playGame == 'y'){
+				play = true;
+				playRound();
+				gameOver = isGameOver();
+			}
+			else //If they put anything else in there, continue the loop, and inform the player it must be y or a n
+			{
+				cout << "That was not an y/n" << endl;
+			}
+
+			if (gameOver){
+				play = false;
+
+				cout << winner << " is the winner!" << endl << endl;
+			}
 		}
 	}
+
+
+	cout << "Game has ended...." << endl;
 
 	system("pause");
 
@@ -196,10 +221,9 @@ void playRound(){
 				playerDeck.addCard(compDeck.getFront());
 				compDeck.eraseCard();
 
-				for (int i = tablePile.getSize() - 1; i > 0; i--)
-				{
-					playerDeck.addCard(tablePile[i]);
-					tablePile.eraseCard(tablePile.begin() + i);
+				while (tablePile.getSize() > 0){
+					playerDeck.addCard(tablePile.getFront());
+					tablePile.eraseCard();
 				}
 
 				isTie = false;
@@ -211,10 +235,9 @@ void playRound(){
 				compDeck.addCard(playerDeck.getFront());
 				playerDeck.eraseCard();
 
-				for (int i = tablePile.getSize() - 1; i > 0; i--)
-				{
-					playerDeck.addCard(tablePile[i]);
-					tablePile.eraseCard(tablePile.begin() + i);
+				while (tablePile.getSize() > 0){
+					compDeck.addCard(tablePile.getFront());
+					tablePile.eraseCard();
 				}
 
 				isTie = false;
@@ -248,4 +271,95 @@ string getSuit(int suitNum){
 	}
 
 	return suitString;
+}
+
+//Find out if the game is over
+bool isGameOver(){
+
+	if ((playerDeck.getSize() <= 0) || (compDeck.getSize() <= 0)){
+
+		if (playerDeck.getSize() <= 0){
+			winner = "The Computer";
+		}
+		else{
+			winner = playerName;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+//Play the entire game automatically
+void playAutoRound(){
+
+	bool isTie = false;
+
+
+	if (playerDeck.getFront().faceValue > compDeck.getFront().faceValue){
+		playerDeck.addCard(playerDeck.getFront());
+		playerDeck.eraseCard();
+		playerDeck.addCard(compDeck.getFront());
+		compDeck.eraseCard();
+	}
+	else if (playerDeck.getFront().faceValue < compDeck.getFront().faceValue){
+		compDeck.addCard(compDeck.getFront());
+		compDeck.eraseCard();
+		compDeck.addCard(playerDeck.getFront());
+		playerDeck.eraseCard();
+	}
+	else{
+		//Set isTie to be true
+		isTie = true;
+		//While it is still a tie, do this
+		while (isTie){
+
+			//Remove the already flipped card, and the three top cards from the players hand and place them into the table vector
+			for (int i = 0; i < 4; i++){
+				tablePile.addCard(playerDeck.getFront());
+				playerDeck.eraseCard();
+				if (playerDeck.getSize() == 1){
+					i = 4;
+				}
+			}
+			//Remove the already flipped card, and the three top cards from the computers hand and place them into the table vector
+			for (int i = 0; i < 4; i++){
+				tablePile.addCard(compDeck.getFront());
+				compDeck.eraseCard();
+				if (compDeck.getSize() == 1){
+					i = 4;
+				}
+			}
+
+			if (playerDeck.getFront().faceValue > compDeck.getFront().faceValue){
+				playerDeck.addCard(playerDeck.getFront());
+				playerDeck.eraseCard();
+				playerDeck.addCard(compDeck.getFront());
+				compDeck.eraseCard();
+
+				while (tablePile.getSize() > 0){
+					playerDeck.addCard(tablePile.getFront());
+					tablePile.eraseCard();
+				}
+
+				isTie = false;
+			}
+			else if (playerDeck.getFront().faceValue < compDeck.getFront().faceValue){
+				compDeck.addCard(compDeck.getFront());
+				compDeck.eraseCard();
+				compDeck.addCard(playerDeck.getFront());
+				playerDeck.eraseCard();
+
+				while (tablePile.getSize() > 0){
+					compDeck.addCard(tablePile.getFront());
+					tablePile.eraseCard();
+				}
+
+				isTie = false;
+			}
+
+		}
+	}
+
 }
