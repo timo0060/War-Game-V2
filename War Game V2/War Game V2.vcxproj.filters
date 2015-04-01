@@ -21,9 +21,15 @@
     <ClCompile Include="MainDeck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerDeck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainDeck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDeck.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

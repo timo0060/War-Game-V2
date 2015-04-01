@@ -9,6 +9,10 @@ MainDeck::MainDeck(){
 	}	
 }
 
+MainDeck::~MainDeck(){
+
+}
+
 void MainDeck::displayDeck(){
 	for (unsigned int i = 0; i < deck.size(); i++)
 	{
@@ -44,4 +48,12 @@ void MainDeck::shuffleMainDeck(int numShuffle){
 		shuffle(deck.begin(), deck.end(), timmiesRandomEngine);
 	}
 
+}
+
+int MainDeck::getSize(){
+	return deck.size();
+}
+
+MainDeck::card MainDeck::getCard(int index){
+	return deck.at(index);
 }

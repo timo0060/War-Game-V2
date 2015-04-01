@@ -22,9 +22,14 @@ public:
 	//Default constructor
 	MainDeck();
 
+	//Destructor
+	~MainDeck();
+
 	//Methods
 	void displayDeck();
 	void shuffleMainDeck(int);
+	int getSize();
+	card getCard(int);
 
 private:
 	vector<card>deck;

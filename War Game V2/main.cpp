@@ -3,29 +3,53 @@
 #include <vector>
 
 #include "MainDeck.h"
+#include "PlayerDeck.h"
 
 using namespace std;
 
 int getNumShuffle();
+void splitDeck();
+void getPlayerName();
+
+//Create Main Decks (Holds all the cards)
+MainDeck mainDeck;
+PlayerDeck playerDeck;
+PlayerDeck compDeck;
+
+string playerName;
 
 int main(){
-	//Create Main Deck (Holds all the cards)
-	MainDeck mainDeck;
-
-
+	
 	//Declare game variables
 	int numShuffle;
+	bool play = true;
+	bool gameOver = false;
+
+	getPlayerName();
+
+	cout << "So, people call you " << playerName << "? Well welcome to WAR!" << endl << endl;
 
 	numShuffle = getNumShuffle();
 
 	cout << endl;
 
 	mainDeck.shuffleMainDeck(numShuffle);
-	mainDeck.displayDeck();
+	
+	splitDeck();
+
+	cout << "The Deck has been split........" << endl << endl;
+
+
 
 	system("pause");
 
 	return 0;
+}
+
+void getPlayerName(){
+
+	cout << "Welcome Player, What is your name? ";
+	cin >> playerName;
 }
 
 int getNumShuffle(){
@@ -58,4 +82,16 @@ int getNumShuffle(){
 	} while (!shuffleIsNumber);
 
 	return numShuffle;
+}
+
+//Split the deck
+void splitDeck(){
+
+	int mainDeckHalf = (mainDeck.getSize() / 2);
+
+	for (int i = 0; i < mainDeckHalf; i++){		
+		playerDeck.addCard(mainDeck.getCard(i));
+		compDeck.addCard(mainDeck.getCard(i + mainDeckHalf));
+	}
+
 }
