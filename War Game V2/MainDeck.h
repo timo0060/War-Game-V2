@@ -1,13 +1,16 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <time.h>
+#include <random>
 
 using namespace std;
 
-#ifndef PLAYINGDECK_H
-#define PLAYINGDECK_H
+#ifndef MAINDECK_H
+#define MAINDECK_H
 
-class PlayingDeck{
+class MainDeck{
 public:
 
 	struct card{
@@ -17,7 +20,11 @@ public:
 
 
 	//Default constructor
-	PlayingDeck();
+	MainDeck();
+
+	//Methods
+	void displayDeck();
+	void shuffleMainDeck(int);
 
 private:
 	vector<card>deck;

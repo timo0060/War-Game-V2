@@ -18,12 +18,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlayingDeck.cpp">
+    <ClCompile Include="MainDeck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PlayingDeck.h">
+    <ClInclude Include="MainDeck.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
