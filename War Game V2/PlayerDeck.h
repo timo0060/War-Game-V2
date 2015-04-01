@@ -22,6 +22,9 @@ public:
 	void addCard(MainDeck::card);
 	void displayDeck();
 	int getSize();
+	MainDeck::card getFront();
+	void eraseCard();
+	void eraseCard(int);
 
 private:
 	vector<MainDeck::card>deck;

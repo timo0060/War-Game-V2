@@ -42,3 +42,15 @@ void PlayerDeck::displayDeck(){
 int PlayerDeck::getSize(){
 	return deck.size();
 }
+
+MainDeck::card PlayerDeck::getFront(){
+	return deck.front();
+}
+
+void PlayerDeck::eraseCard(){
+	deck.erase(deck.begin());
+}
+
+void PlayerDeck::eraseCard(int index){
+	deck.erase(dec)
+}
